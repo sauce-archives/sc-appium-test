@@ -12,7 +12,7 @@ node {
             stage("start sc") {
                 sh "curl https://saucelabs.com/downloads/sc-4.4.9-linux.tar.gz -o sc.tar.gz"
                 sh "tar -xvzf sc.tar.gz"
-                sh "sc-4.4.9-linux/bin/sc --user ${SAUCE_USERNAME} --api-key ${SAUCE_KEY} --tunnel-identifier ${TUNNEL_IDENTIFIER} -x ${SC_PUBLIC_ENDPOINT} --pidfile=${scPidFile} > ${scLogFile} 2>&1 &"
+                sh "sc-4.4.9-linux/bin/sc --user=${SAUCE_USERNAME} --api-key=${SAUCE_KEY} --tunnel-identifier=${TUNNEL_IDENTIFIER} --rest-url=${SC_PUBLIC_ENDPOINT} --pidfile=${scPidFile} > ${scLogFile} 2>&1 &"
             }
 
             stage("wait for sc") {
