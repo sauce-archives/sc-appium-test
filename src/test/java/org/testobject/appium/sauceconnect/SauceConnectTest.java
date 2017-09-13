@@ -22,7 +22,7 @@ public class SauceConnectTest {
 	void setUp() {
 		DesiredCapabilities capabilities = new DesiredCapabilities();
 
-		capabilities.setCapability(TESTOBJECT_API_KEY, getEnv(TESTOBJECT_API_KEY));
+		capabilities.setCapability(TESTOBJECT_API_KEY, getEnv(TESTOBJECT_API_KEY.toUpperCase()));
 		capabilities.setCapability(TESTOBJECT_TEST_NAME, "sc-appium-test");
 		capabilities.setCapability("tunnelIdentifier", getEnv("TUNNEL_IDENTIFIER"));
 		capabilities.setCapability("TESTOBJECT_UUID", UUID.randomUUID().toString());
