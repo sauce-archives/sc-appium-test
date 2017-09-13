@@ -15,8 +15,14 @@ node {
             }
 
             stage("wait for sc") {
-                timeout(time: 3, unit: 'MINUTES') {
-                    sh "( tail -f -n0 ${scLogFile} & ) | grep -q 'Sauce Connect is up, you may start your tests'"
+                try {
+                    timeout(time: 3, unit: 'MINUTES') {
+                        sh "( tail -f -n0 ${scLogFile} & ) | grep -q 'Sauce Connect is up, you may start your tests'"
+                    }
+                } catch (Exception e) {
+                    println("Failed to connect to SC. Contents of log file:")
+                    sh "cat ${scLogFile}"
+                    throw e
                 }
             }
 
