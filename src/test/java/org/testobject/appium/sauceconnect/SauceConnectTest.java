@@ -33,7 +33,10 @@ public class SauceConnectTest {
 	}
 
 	@Test
-	void getPageSource() {
+	void getPageSource() throws InterruptedException {
+		String url = getEnv("DESTINATION_URL");
+		driver.get(url);
+		Thread.sleep(2000);
 		System.out.println(driver.getPageSource());
 	}
 
