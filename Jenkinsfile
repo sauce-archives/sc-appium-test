@@ -1,6 +1,6 @@
 
 node {
-    docker.image("maven:3.5.0").inside {
+    docker.image("java:8").inside {
         stage("checkout") {
             checkout scm
         }
@@ -28,7 +28,7 @@ node {
             }
 
             stage("start test") {
-                sh "mvn test"
+                sh "./gradlew test"
             }
         } finally {
             def pid = readFile scPidFile
