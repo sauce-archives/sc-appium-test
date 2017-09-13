@@ -30,7 +30,7 @@ node {
             }
         } finally {
             def pid = readFile scPidFile
-            sh "kill ${pid} | echo No 'sc' process found to kill"
+            sh "kill ${pid}"
         }
     }
 }
