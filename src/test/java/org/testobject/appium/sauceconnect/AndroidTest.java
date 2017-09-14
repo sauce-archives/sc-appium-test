@@ -13,10 +13,11 @@ public class AndroidTest extends AbstractTest {
 	}
 
 	@Test
-	public void test() {
+	public void test() throws InterruptedException {
 		String endpoint = getEnv("DESTINATION_URL");
 		driver.findElementById("endpoint").sendKeys(endpoint);
 		driver.findElementById("button").click();
+		Thread.sleep(3000);
 		String responseStatus = driver.findElementById("response_status").getText();
 		String content = driver.findElementById("content").getText();
 
