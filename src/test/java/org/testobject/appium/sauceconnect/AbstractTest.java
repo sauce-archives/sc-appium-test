@@ -17,8 +17,8 @@ import static org.testobject.rest.api.appium.common.TestObjectCapabilities.TESTO
 class AbstractTest {
 
 	enum DRIVER {
-		IOS(capabilities -> new IOSDriver<>(getAppiumServer(), capabilities)),
-		ANDROID(capabilities -> new AndroidDriver<>(getAppiumServer(), capabilities));
+		IOSDRIVER(capabilities -> new IOSDriver<>(getAppiumServer(), capabilities)),
+		ANDROIDDRIVER(capabilities -> new AndroidDriver<>(getAppiumServer(), capabilities));
 
 		private final Function<DesiredCapabilities, RemoteWebDriver> factory;
 
@@ -34,16 +34,16 @@ class AbstractTest {
 	RemoteWebDriver driver;
 
 	void initDriver(String apiKey) {
-		DRIVER type = DRIVER.valueOf(getEnv("DRIVER"));
+		DRIVER type = DRIVER.valueOf(getEnv("DRIVER").toUpperCase());
 		initDriver(apiKey, type);
 	}
 
 	void initAndroidDriver(String apiKey) {
-		initDriver(apiKey, DRIVER.ANDROID);
+		initDriver(apiKey, DRIVER.ANDROIDDRIVER);
 	}
 
 	void initIosDriver(String apiKey) {
-		initDriver(apiKey, DRIVER.IOS);
+		initDriver(apiKey, DRIVER.IOSDRIVER);
 	}
 
 	private void initDriver(String apiKey, DRIVER driverType) {
