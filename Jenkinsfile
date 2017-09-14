@@ -16,12 +16,8 @@ node {
             }
 
             stage("wait for sc") {
-                try {
-                    timeout(time: 3, unit: 'MINUTES') {
-                        sh "( tail -f -n0 ${scLogFile} & ) | grep -q 'Sauce Connect is up, you may start your tests'"
-                    }
-                } finally {
-                    sh "cat ${scLogFile}"
+                timeout(time: 3, unit: 'MINUTES') {
+                    sh "( tail -f -n0 ${scLogFile} & ) | grep -q 'Sauce Connect is up, you may start your tests'"
                 }
             }
 
@@ -29,8 +25,12 @@ node {
                 sh "./gradlew test"
             }
         } finally {
-            def pid = readFile scPidFile
-            sh "kill ${pid}"
+            try {
+                def pid = readFile scPidFile
+                sh "kill ${pid}"
+            } finally {
+                sh "cat ${scLogFile}"
+            }
         }
     }
 }
