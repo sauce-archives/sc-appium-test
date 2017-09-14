@@ -1,15 +1,21 @@
 package org.testobject.appium.sauceconnect;
 
+import io.appium.java_client.ios.IOSDriver;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class IosTest extends AbstractTest {
+	private IOSDriver driver;
+
 	@BeforeEach
 	void setUp() {
 		String apiKey = getEnv("TESTOBJECT_API_KEY_IOS");
-		initIosDriver(apiKey);
+		DesiredCapabilities desiredCapabilities = createCapabilities(apiKey);
+		driver = new IOSDriver(getAppiumServer(), desiredCapabilities);
 	}
 
 	@Test
@@ -25,5 +31,12 @@ public class IosTest extends AbstractTest {
 		System.out.println(content);
 
 		assertEquals(200, responseStatus);
+	}
+
+	@AfterEach
+	void tearDown() {
+		if (driver != null) {
+			driver.quit();
+		}
 	}
 }

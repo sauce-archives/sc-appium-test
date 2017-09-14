@@ -1,21 +1,28 @@
 package org.testobject.appium.sauceconnect;
 
+import io.appium.java_client.android.AndroidDriver;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AndroidTest extends AbstractTest {
+	private AndroidDriver driver;
+
 	@BeforeEach
 	void setUp() {
 		String apiKey = getEnv("TESTOBJECT_API_KEY_ANDROID");
-		initAndroidDriver(apiKey);
+		DesiredCapabilities desiredCapabilities = createCapabilities(apiKey);
+		driver = new AndroidDriver(getAppiumServer(), desiredCapabilities);
 	}
 
 	@Test
 	public void test() throws InterruptedException {
 		String endpoint = getEnv("DESTINATION_URL");
-		driver.findElementById("endpoint").sendKeys(endpoint);
+		driver.findElement(By.id("com.testobject.httprequest:id/endpoint")).sendKeys(endpoint);
 		driver.findElementById("button").click();
 		Thread.sleep(3000);
 		String responseStatus = driver.findElementById("response_status").getText();
@@ -25,5 +32,12 @@ public class AndroidTest extends AbstractTest {
 		System.out.println(content);
 
 		assertEquals(200, Integer.parseInt(responseStatus));
+	}
+
+	@AfterEach
+	void tearDown() {
+		if (driver != null) {
+			driver.quit();
+		}
 	}
 }

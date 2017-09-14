@@ -15,13 +15,13 @@ node {
                 sh "sc-4.4.9-linux/bin/sc --user=${SAUCE_USERNAME} --api-key=${SAUCE_KEY} --tunnel-identifier=${TUNNEL_IDENTIFIER} --rest-url=${SC_PUBLIC_ENDPOINT} --pidfile=${scPidFile} > ${scLogFile} 2>&1 &"
             }
 
-            stage("wait for sc") {
+            stage("wait for tunnel") {
                 timeout(time: 3, unit: 'MINUTES') {
                     sh "( tail -f -n0 ${scLogFile} & ) | grep -q 'Sauce Connect is up, you may start your tests'"
                 }
             }
 
-            stage("start test") {
+            stage("test") {
                 sh "./gradlew test"
             }
         } finally {

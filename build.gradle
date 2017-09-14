@@ -20,6 +20,7 @@ repositories {
 }
 
 dependencies {
+    testCompile 'io.appium:java-client:5.0.3'
     testCompile 'org.seleniumhq.selenium:selenium-remote-driver:3.5.3'
     testCompile 'org.testobject:testobject-appium-java-api:0.1.0'
     testCompile 'org.junit.jupiter:junit-jupiter-api:5.0.0'
