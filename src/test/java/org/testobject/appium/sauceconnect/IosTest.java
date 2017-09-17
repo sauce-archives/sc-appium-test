@@ -30,7 +30,7 @@ public class IosTest extends AbstractTest {
 		System.out.println("Response: " + responseStatus);
 		System.out.println(content);
 
-		assertEquals(200, responseStatus);
+		assertEquals(200, Integer.parseInt(responseStatus));
 	}
 
 	@AfterEach
