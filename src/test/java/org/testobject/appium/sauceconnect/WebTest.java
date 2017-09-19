@@ -13,6 +13,7 @@ class WebTest extends AbstractTest {
 	void setUp() {
 		String apiKey = getEnv("TESTOBJECT_API_KEY_WEB");
 		DesiredCapabilities desiredCapabilities = createCapabilities(apiKey);
+		desiredCapabilities.setCapability("platformName", getEnv("PLATFORM_WEB"));
 		driver = new RemoteWebDriver(getAppiumServer(), desiredCapabilities);
 	}
 
