@@ -15,11 +15,13 @@ class WebTest extends AbstractTest {
 		DesiredCapabilities desiredCapabilities = createCapabilities(apiKey);
 		desiredCapabilities.setCapability("platformName", getEnv("PLATFORM_WEB"));
 		driver = new RemoteWebDriver(getAppiumServer(), desiredCapabilities);
+		System.out.println("Returned capabilities: " + driver.getCapabilities());
 	}
 
 	@Test
 	void getPageSource() throws InterruptedException {
 		String url = getEnv("DESTINATION_URL");
+		System.out.println("Loading " + url);
 		driver.get(url);
 		Thread.sleep(2000);
 		System.out.println(driver.getPageSource());
