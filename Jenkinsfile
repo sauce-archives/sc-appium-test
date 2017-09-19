@@ -1,7 +1,10 @@
 
 node {
+    def nginxContainer
+    def nginxPort = 8666
+    def nginxName = sc-appium-test-nginx
     stage("start webserver") {
-        def nginx = docker.image("nginx:1.13.5").run("-p 8666:80 -v web:/usr/share/nginx/html:ro")
+        nginxContainer = docker.image("nginx:1.13.5").run("-p ${nginxPort}:80 -v web:/usr/share/nginx/html:ro --name ${nginxName}")
     }
 
     docker.image("java:8").inside {
@@ -26,13 +29,12 @@ node {
             }
 
             stage("test") {
-                def ip = sh returnStdout: true, script: "hostname -i"
-                withEnv(["DESTINATION_URL=${ip}:8666"]) {
+                withEnv(["DESTINATION_URL=${nginxName}:${nginxPort}"]) {
                     sh "./gradlew test"
                 }
             }
         } finally {
-            nginx.stop()
+            nginxContainer.stop()
             try {
                 def pid = readFile scPidFile
                 sh "kill ${pid}"
