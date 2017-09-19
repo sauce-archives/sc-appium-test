@@ -2,7 +2,7 @@
 node {
     def nginxContainer
     def nginxPort = 8666
-    def nginxName = sc-appium-test-nginx
+    def nginxName = "sc-appium-test-nginx"
     stage("start webserver") {
         nginxContainer = docker.image("nginx:1.13.5").run("-p ${nginxPort}:80 -v web:/usr/share/nginx/html:ro --name ${nginxName}")
     }
