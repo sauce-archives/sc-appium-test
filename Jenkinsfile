@@ -24,7 +24,7 @@ node {
 
             stage("test") {
                 def ip = sh returnStdout: true, script: "hostname -i"
-                withEnv(["DESTINATION_URL=$ip:8666"]) {
+                withEnv(["DESTINATION_URL=${ip}:8666"]) {
                     sh "./gradlew test"
                 }
             }
