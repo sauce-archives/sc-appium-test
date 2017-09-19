@@ -7,7 +7,7 @@ node {
         nginxContainer = docker.image("nginx:1.13.5").run("-p ${nginxPort}:80 -v web:/usr/share/nginx/html:ro --name ${nginxName}")
     }
 
-    docker.image("java:8").inside {
+    docker.image("java:8").inside("--net=container:${nginxName}" {
         stage("checkout") {
             checkout scm
         }
