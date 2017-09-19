@@ -1,5 +1,9 @@
 
 node {
+    stage("start webserver") {
+        def nginx = docker.image("nginx:1.13.5").run("-p 8666:80 -v web:/usr/share/nginx/html:ro")
+    }
+
     docker.image("java:8").inside {
         stage("checkout") {
             checkout scm
@@ -7,7 +11,6 @@ node {
 
         def scLogFile = "sc.log"
         def scPidFile = "sc.pid"
-        def nginx = docker.image("nginx:1.13.5").run("-p 8666:80 -v web:/usr/share/nginx/html:ro")
 
         try {
             stage("start sc") {
