@@ -1,21 +1,23 @@
 
 node {
     def nginxContainer
-    def nginxPort = 8666
     def nginxName = "sc-appium-test-nginx"
-    stage("start webserver") {
-        nginxContainer = docker.image("nginx:1.13.5").run("-p ${nginxPort}:80 -v web:/usr/share/nginx/html:ro --name ${nginxName}")
+    def scLogFile = "sc.log"
+    def scPidFile = "sc.pid"
+    stage("start nginx") {
+        nginxContainer = docker.image("nginx:1.13.5").run("-v web:/usr/share/nginx/html/web:ro --name ${nginxName}")
     }
 
-    docker.image("java:8").inside("--net=container:${nginxName}") {
-        stage("checkout") {
-            checkout scm
-        }
+    try {
+        docker.image("java:8").inside("--link ${nginxName}:${nginxName}") {
+            stage("checkout") {
+                checkout scm
+            }
 
-        def scLogFile = "sc.log"
-        def scPidFile = "sc.pid"
+            stage("verify nginx") {
+                sh "curl http://${nginxName}/web"
+            }
 
-        try {
             stage("start sc") {
                 sh "curl https://saucelabs.com/downloads/sc-4.4.9-linux.tar.gz -o sc.tar.gz"
                 sh "tar -xvzf sc.tar.gz"
@@ -29,11 +31,13 @@ node {
             }
 
             stage("test") {
-                withEnv(["DESTINATION_URL=${nginxName}:${nginxPort}"]) {
+                withEnv(["DESTINATION_URL=http://${nginxName}/web"]) {
                     sh "./gradlew test"
                 }
             }
-        } finally {
+        }
+    } finally {
+        stage("cleanup") {
             nginxContainer.stop()
             try {
                 def pid = readFile scPidFile
