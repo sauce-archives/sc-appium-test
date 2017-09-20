@@ -41,9 +41,7 @@ node {
             }
         }
     } finally {
-        stage("cleanup") {
-            nginxContainer.stop()
-            sh "cat ${scLogFile}"
-        }
+        nginxContainer.stop()
+        sh "cat ${scLogFile}"
     }
 }
