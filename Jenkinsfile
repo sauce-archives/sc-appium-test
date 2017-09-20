@@ -31,8 +31,12 @@ node {
             }
 
             stage("test") {
-                withEnv(["DESTINATION_URL=http://${nginxName}/web"]) {
-                    sh "./gradlew test"
+                try {
+                    withEnv(["DESTINATION_URL=http://${nginxName}/web"]) {
+                        sh "./gradlew test"
+                    }
+                } finally {
+                    junit "**/TEST-*.xml"
                 }
             }
         }
