@@ -39,12 +39,7 @@ node {
     } finally {
         stage("cleanup") {
             nginxContainer.stop()
-            try {
-                def pid = readFile scPidFile
-                sh "kill ${pid}"
-            } finally {
-                sh "cat ${scLogFile}"
-            }
+            sh "cat ${scLogFile}"
         }
     }
 }
