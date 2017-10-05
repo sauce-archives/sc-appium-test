@@ -25,7 +25,7 @@ public class IosTest extends AbstractTest {
 		String endpoint = getEnv("DESTINATION_URL");
 		driver.findElementById("endpoint_text_field").sendKeys(endpoint);
 		driver.findElementById("get_button").click();
-		Thread.sleep(5000);
+		Thread.sleep(10000);
 		String responseStatus = driver.findElementById("status_code_label").getText();
 		String content = driver.findElementById("response_content_label").getText();
 

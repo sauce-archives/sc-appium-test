@@ -24,7 +24,7 @@ class WebTest extends AbstractTest {
 		String url = getEnv("DESTINATION_URL");
 		System.out.println("Loading " + url);
 		driver.get(url);
-		Thread.sleep(2000);
+		Thread.sleep(10000);
 		System.out.println(driver.getPageSource());
 	}
 

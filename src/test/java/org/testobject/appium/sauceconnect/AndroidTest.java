@@ -26,7 +26,7 @@ public class AndroidTest extends AbstractTest {
 		String endpoint = getEnv("DESTINATION_URL");
 		driver.findElement(By.id("com.testobject.httprequest:id/endpoint")).sendKeys(endpoint);
 		driver.findElementById("button").click();
-		Thread.sleep(3000);
+		Thread.sleep(10000);
 		String responseStatus = driver.findElementById("response_status").getText();
 		String content = driver.findElementById("content").getText();
 
