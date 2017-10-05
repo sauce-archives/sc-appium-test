@@ -14,6 +14,7 @@ class WebTest extends AbstractTest {
 		String apiKey = getEnv("TESTOBJECT_API_KEY_WEB");
 		DesiredCapabilities desiredCapabilities = createCapabilities(apiKey);
 		desiredCapabilities.setCapability("platformName", getEnv("PLATFORM_WEB"));
+		System.out.println("Initializing web test with capabilities: " + driver.getCapabilities());
 		driver = new RemoteWebDriver(getAppiumServer(), desiredCapabilities);
 		System.out.println("Returned capabilities: " + driver.getCapabilities());
 	}

@@ -16,6 +16,7 @@ public class AndroidTest extends AbstractTest {
 	void setUp() {
 		String apiKey = getEnv("TESTOBJECT_API_KEY_ANDROID");
 		DesiredCapabilities desiredCapabilities = createCapabilities(apiKey);
+		System.out.println("Initializing Android test with capabilities: " + driver.getCapabilities());
 		driver = new AndroidDriver(getAppiumServer(), desiredCapabilities);
 		System.out.println("Returned capabilities: " + driver.getCapabilities());
 	}

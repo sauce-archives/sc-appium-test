@@ -15,6 +15,7 @@ public class IosTest extends AbstractTest {
 	void setUp() {
 		String apiKey = getEnv("TESTOBJECT_API_KEY_IOS");
 		DesiredCapabilities desiredCapabilities = createCapabilities(apiKey);
+		System.out.println("Initializing iOS test with capabilities: " + driver.getCapabilities());
 		driver = new IOSDriver(getAppiumServer(), desiredCapabilities);
 		System.out.println("Returned capabilities: " + driver.getCapabilities());
 	}
