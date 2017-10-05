@@ -1,21 +1,21 @@
 
 node {
-    def nginxContainer
-    def nginxName = "sc-appium-test-nginx"
     def scLogFile = "sc.log"
     def scPidFile = "sc.pid"
-    stage("start nginx") {
-        nginxContainer = docker.image("nginx:1.13.5").run("-v web:/usr/share/nginx/html/web:ro --name ${nginxName}")
-    }
+    def endpoint
 
     try {
-        docker.image("java:8").inside("--link ${nginxName}:${nginxName}") {
+        docker.image("java:8").inside {
             stage("checkout") {
                 checkout scm
             }
 
-            stage("verify nginx") {
-                sh "curl http://${nginxName}/web"
+            stage("start webserver") {
+                sh "apt-get install -y python curl"
+                sh "python -m SimpleHTTPServer &"
+                def ip = sh returnStdout: true, script: 'hostname -I'
+                endpoint = "http://${ip.trim()}:8000/web"
+                sh "curl ${endpoint}"
             }
 
             stage("start sc") {
@@ -32,7 +32,7 @@ node {
 
             stage("test") {
                 try {
-                    withEnv(["DESTINATION_URL=http://${nginxName}/web"]) {
+                    withEnv(["DESTINATION_URL=endpoint"]) {
                         sh "./gradlew clean test"
                     }
                 } finally {
@@ -41,7 +41,10 @@ node {
             }
         }
     } finally {
-        nginxContainer.stop()
-        sh "cat ${scLogFile}"
+        try {
+            sh "cat ${scLogFile}"
+        } catch (all) {
+            print "Failed to cat ${scLogFile}. Probably it doesn't exist because the test aborted early."
+        }
     }
 }
