@@ -32,7 +32,7 @@ node {
 
             stage("test") {
                 try {
-                    withEnv(["DESTINATION_URL=endpoint"]) {
+                    withEnv(["DESTINATION_URL=${endpoint}"]) {
                         sh "./gradlew clean test"
                     }
                 } finally {
